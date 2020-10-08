@@ -1,0 +1,33 @@
+{% extends "/layout/layout.html" %}
+{% block content %}
+<div style="margin: 0; padding: 0; height: 90vh;" class="row">
+    <div class="col-3 list-group border">
+        <div class="list-group-item text-center border-0">
+            <h3 class="text-success">DCD</h3>
+        </div>
+        <a class="list-group-item list-group-item-action border-0" href="/">Home</a>
+        <a class="list-group-item list-group-item-action border-0" href="/user">Users</a>
+        <a class="list-group-item list-group-item-action border-0" href="/chart">Charts</a>
+    </div>
+    <div style="overflow: scroll;" class="col-9 h-100">
+        <div class="d-flex flex-column justify-content-start align-items-start p-2">
+            <h4>Lượt truy cập trong tháng</h4>
+            <select>
+                <option value="">--All--</option>
+            </select>
+            <div class="row m-2 col-12">
+                {% for i in ["Cần Thơ", "Vĩnh Long", "Hậu Giang", "Sóc Trăng"] %}
+                <div class="card w-100 m-2">
+                    <div class="card-header w-100">
+                      {{i}}
+                    </div>
+                    <div class="card-body">
+                        <p><strong>Số người dùng</strong>: 100</p>
+                        <p><strong>Số lượt truy cập</strong>: 1000</p>
+                    </div>
+                  </div>
+                  {% endfor %}
+            </div>
+        </div>
+    </div>
+    {% endblock content %}

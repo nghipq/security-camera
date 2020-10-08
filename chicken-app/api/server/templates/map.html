@@ -1,0 +1,342 @@
+{% extends "/layout/layout.html" %}
+{% block content %}
+<style>
+    body {
+        margin: 0;
+        padding: 0;
+    }
+
+    #map {
+        position: absolute;
+        top: 80px;
+        bottom: 0;
+        width: 100%;
+        left: 0;
+    }
+
+    .note {
+        background-color: #fff;
+        position: fixed;
+        width: 12rem;
+        border: 0.1rem solid black;
+        bottom: 0;
+        right: 0;
+    }
+
+    p {
+        text-align: center;
+        font-size: 1.5rem;
+        margin: 0;
+        padding: 0.5rem;
+    }
+
+    ul {
+        margin: 0;
+        padding: 1rem;
+    }
+
+    li {
+        font-size: 1rem;
+    }
+
+    .select {
+        position: absolute;
+        right: 0;
+        width: 7rem;
+        top: 80px;
+    }
+</style>
+<div id="map"></div>
+<div id="note" class="note">
+    <p>Chú thích</p>
+    <hr size="2px" color="#000" />
+    <ul style=" list-style: none; font-size: 50px;">
+        <li>
+            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTnQMGgwepFLn_zmnZLz_Js5554VIj8YMj43ShE28_QSgpKtM1D&s"
+                height="15rem" width="15rem" />
+            Bệnh đậu gà </li>
+        <li>
+            <img src="https://pngimage.net/wp-content/uploads/2018/06/png-point-7.png" height="15rem" width="15rem" />
+            Bệnh ILT</li>
+        <li>
+            <img src=" https://img.favpng.com/17/19/6/circle-area-blue-point-angle-png-favpng-UygyW9zh8QUmmsnpnLn4PBj4k_t.jpg"
+                height="15rem" width="15rem" />
+            Bệnh newscalte</li>
+        <li>
+            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSlLnKUPt36FwUMlEASOQHihEBrSXAXVCdy5OBrrFa2IJ5trixV&s"
+                height="15rem" width="15rem" />
+            Bệnh marek</li>
+    </ul>
+</div>
+<div id="note2" class="note">
+    <p>Chú thích</p>
+    <hr size="2px" color="#000" />
+    <ul style=" list-style: none; font-size: 50px;">
+        <li>
+            <img src="data:image/png;base64,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"
+                height="15rem" width="15rem" />
+            Từ 2 đến 9 điểm </li>
+        <li>
+            <img src="http://d2qsfz7lafswjr.cloudfront.net/thumbcache/314x314/301/261714a9-6b94-4245-9bc4-85e2b5145277.gif"
+                height="15rem" width="15rem" />
+            Từ 10 đến 14 điểm</li>
+        <li>
+            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTnQMGgwepFLn_zmnZLz_Js5554VIj8YMj43ShE28_QSgpKtM1D&s"
+                height="15rem" width="15rem" />
+            Từ 16 điểm trở lên </li>
+    </ul>
+</div>
+
+<select name="cars" class="select" id="select">
+    <option value=0 selected="selected">ALL</option>
+    <option value=1>Đậu Gà</option>
+    <option value=2>ILT</option>
+    <option value=3>Newscalte</option>
+    <option value=5>Marek</option>
+</select>
+<script src="https://unpkg.com/axios/dist/axios.min.js"></script> // thư viện axios
+<script>
+    var note = document.getElementById("note")
+    var note2 = document.getElementById("note2")
+    var select = document.getElementById("select")
+    var link = 'http://127.0.0.1:5000'
+    var list = document.getElementById("list")
+    var items = []
+    function loadAllSickness() {
+        note2.style.display = "none"
+        var arr = []
+        axios.get(link + '/location')
+            .then(res => {
+                data = res.data // lay du lieu trong link
+                for (i = 1; i <= 5; i++) {
+                    id = JSON.stringify(i)  // chuyen int sang string
+                    newItem = {
+                        id,
+                        cotinates: []
+                    }
+                    for (item of data) {
+                        if (item["sicknessId"] == id) {
+                            newItem["cotinates"].push(item["cotinate"]) // luu toa do 
+                        }
+                    }
+                    arr.push(newItem)
+                    items.push(newItem) // add vao arr
+                }
+            })
+            .then(() => {
+
+                mapboxgl.accessToken = 'pk.eyJ1IjoibmhpZW5odGNlMTQwMTIyIiwiYSI6ImNrNHRpbmdoejA3eXYza3FicGJqcGJuN3kifQ.XGzVQQft_2k-M2RRgHnxlQ';
+                var map = new mapboxgl.Map({
+                    container: 'map',
+                    style: 'mapbox://styles/mapbox/streets-v9',
+                    center: [109, 16], // toa do o viet nam
+                    zoom: 4.8
+                });
+
+                var size = 200; // size nut
+
+                map.on('load', function () {
+                    for (item of arr) {
+                        var fea = []
+                        for (x of item["cotinates"]) {
+                            obj = {
+                                'type': 'Feature',
+                                'geometry': {
+                                    'type': 'Point',
+                                    'coordinates': x // toa do
+                                }
+                            }
+                            fea.push(obj)
+                        }
+                        map.addSource('point' + item["id"], {
+                            'type': 'geojson',
+                            'data': {
+                                'type': 'FeatureCollection',
+                                'features': fea
+                            },
+                        },
+                        );
+                        color = ["red", "yellow", "blue", "rgba(0,0,0,0)", "green"]
+                        map.addLayer({
+                            'id': 'point' + item["id"], // id benh
+                            'type': 'circle',
+                            'source': 'point' + item["id"], // id benh
+                            'paint': {
+                                'circle-radius': 4,
+                                'circle-color': color[parseInt(item["id"]) - 1]// lay color
+                            },
+                            'filter': ['==', '$type', 'Point']
+                        });
+                    }
+                });
+            });
+    }
+    select.addEventListener("change", () => {
+        var id = select.value
+        if (id == 0) {
+            note.style.display = "block"
+            loadAllSickness()
+        } else {
+            note.style.display = "none"
+            note2.style.display = "block"
+            var arr = []
+            axios.get(link + `/location?sicknessId=${id}`)
+                .then(res => {
+                    data = res.data // lay du lieu trong link
+                    for (i = 1; i <= 5; i++) {
+                        id = JSON.stringify(i)  // chuyen int sang string
+                        newItem = {
+                            id,
+                            cotinates: []
+                        }
+                        for (item of data) {
+                            if (item["sicknessId"] == id) {
+                                newItem["cotinates"].push(item["cotinate"]) // luu toa do 
+                            }
+                        }
+                        arr.push(newItem) // add vao arr
+                    }
+                })
+                .then(() => {
+
+                    mapboxgl.accessToken = 'pk.eyJ1IjoibmhpZW5odGNlMTQwMTIyIiwiYSI6ImNrNHRpbmdoejA3eXYza3FicGJqcGJuN3kifQ.XGzVQQft_2k-M2RRgHnxlQ';
+                    var map = new mapboxgl.Map({
+                        container: 'map',
+                        style: 'mapbox://styles/mapbox/streets-v9',
+                        center: [109, 16], // toa do o viet nam
+                        zoom: 4.8
+                    });
+
+                    var size = 200; // size nut
+
+                    map.on('load', function () {
+                        for (item of arr) {
+                            var fea = []
+                            for (x of item["cotinates"]) {
+                                obj = {
+                                    'type': 'Feature',
+                                    'geometry': {
+                                        'type': 'Point',
+                                        'coordinates': x // toa do
+                                    }
+                                }
+                                fea.push(obj)
+                            }
+                            map.addSource('point' + item["id"], {
+                                'type': 'geojson',
+                                'data': {
+                                    'type': 'FeatureCollection',
+                                    'features': fea
+                                },
+                                'cluster': true,
+                                'clusterMaxZoom': 10,
+                                'clusterRadius': 50
+                            },
+                            );
+                            map.addLayer({
+                                'id': 'point' + item["id"], // id benh
+                                'type': 'circle',
+                                'source': 'point' + item["id"], // id benh
+                                'paint': {
+                                    'circle-radius': 6,
+                                    'circle-color': '#6600ff'// lay color
+                                },
+                                'filter': ['!', ['has', 'point_count']]
+                            });
+                        }
+                        for (item of arr) {
+                            var fea = []
+                            for (x of item["cotinates"]) {
+                                obj = {
+                                    'type': 'Feature',
+                                    'geometry': {
+                                        'type': 'Point',
+                                        'coordinates': x // toa do
+                                    }
+                                }
+                                fea.push(obj)
+                            }
+                            map.addSource(item["id"], {
+                                'type': 'geojson',
+                                'data': {
+                                    'type': 'FeatureCollection',
+                                    'features': fea
+                                },
+                                'cluster': true,
+                                'clusterMaxZoom': 10,
+                                'clusterRadius': 50
+                            },
+                            );
+                            map.addLayer({
+                                'id': item["id"], // id benh
+                                'type': 'circle',
+                                'source': item["id"], // id benh
+                                'filter': ['has', 'point_count'],
+                                'paint': {
+                                    'circle-color': [
+                                        'step',
+                                        ['get', 'point_count'],
+                                        '#cc66ff',
+                                        10,
+                                        '#f1f075',
+                                        15,
+                                        '#ff3333'
+                                    ],
+                                    'circle-radius': [
+                                        'step',
+                                        ['get', 'point_count'],
+                                        20,
+                                        100,
+                                        30,
+                                        750,
+                                        40
+                                    ]
+                                }
+                            });
+                        }
+                        for (item of arr) {
+                            var fea = []
+                            for (x of item["cotinates"]) {
+                                obj = {
+                                    'type': 'Feature',
+                                    'geometry': {
+                                        'type': 'Point',
+                                        'coordinates': x // toa do
+                                    }
+                                }
+                                fea.push(obj)
+                            }
+                            map.addSource('text' + item["id"], {
+                                'type': 'geojson',
+                                'data': {
+                                    'type': 'FeatureCollection',
+                                    'features': fea
+                                },
+                                'cluster': true,
+                                'clusterMaxZoom': 10,
+                                'clusterRadius': 50
+                            },
+                            );
+
+                            map.addLayer({
+                                id: 'text' + item["id"],
+                                type: 'symbol',
+                                source: 'text' + item["id"],
+                                filter: ['has', 'point_count'],
+                                layout: {
+                                    'text-field': '{point_count_abbreviated}',
+                                    'text-font': ['DIN Offc Pro Medium', 'Arial Unicode MS Bold'],
+                                    'text-size': 12
+                                }
+                            });
+                        }
+                    })
+                });
+        }
+    })
+</script>
+<script>
+    var link = 'http://127.0.0.1:5000'
+    loadAllSickness()
+</script>
+{% endblock content %}

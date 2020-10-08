@@ -1,0 +1,33 @@
+{% extends "/layout/layout.html" %}
+{% block content %}
+<div style="margin: 0; padding: 0; height: 90vh;" class="row">
+    <div class="col-3 list-group border p-0">
+        <div class="list-group-item text-center border-0">
+            <h3 class="text-success">DCD</h3>
+        </div>
+        <a class="list-group-item list-group-item-action border-0" href="/">Home</a>
+        <a class="list-group-item list-group-item-action border-0" href="/user">Users</a>
+        <a class="list-group-item list-group-item-action border-0" href="/chart">Charts</a>
+    </div>
+    <div style="overflow: scroll;" class="col-9 h-100">
+        <div class="d-flex flex-column justify-content-start align-items-start p-2">
+            <h4>Users</h4>
+            <select>
+                <option value="">--All--</option>
+            </select>
+            <div class="row m-2 col-12">
+                {% for i in range(10) %}
+                <div class="card w-100 m-2">
+                    <h5 class="card-header">City</h5>
+                    <div class="card-body">
+                      <h5 class="card-title">Customer's Name</h5>
+                      <p class="card-text"><strong>Số lượng gia cầm</strong>: 10000</p>
+                      <p class="card-text"><strong>Số lượng gia cầm bệnh</strong>: 0</p>
+                      <a href="#" class="btn btn-primary">Details</a>
+                    </div>
+                  </div>
+                  {% endfor %}
+            </div>
+        </div>
+    </div>
+    {% endblock content %}
